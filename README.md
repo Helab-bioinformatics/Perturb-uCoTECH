@@ -1,7 +1,7 @@
 # Perturb-uCoTECH
 New technology for Jointly profiling transcriptome, epigenome and perturbations in one single cell.
 
-# Single-cell read deconolution
+# Single-cell read decovolution
 Read deconvolution is processed with UMI-tools.
 
 # Pseudo-cell method to calculate perturbation effect
