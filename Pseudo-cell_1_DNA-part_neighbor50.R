@@ -8,7 +8,9 @@ library(dplyr)
 
 # --- (1) load the files ----------------------------------------------
 yourRds <- readRDS("your-Seurat-object.rds")
-yourRds.perturb <- subset(yourRds, cellType %in% c("perturbed"))
+
+# --- only use cells within one cluster by RNA for calculation --------
+yourRds.perturb <- subset(yourRds, cellType %in% c("perturbed_HSPCs"))
 DefaultAssay(yourRds.perturb) <- "RNA"
 
 # --- (2) find neighboring 50 cells -----------------------------------
@@ -17,12 +19,9 @@ cn <- colnames(dt)
 cn <- apply(dt, MARGIN = 1, FUN = function(x) cn[order(x)[1:50]])
 dim(cn)
 
-sgrEnh.mat.raw <- yourRds.perturb@assays$sgrEnh@counts
-sgrEnh.mat <- sgrEnh.mat.raw[rownames(sgrEnh.mat.raw) %in% rownames(yourRds.perturb@assays$DNA@data),]
+sgrEnh.mat <- yourRds.perturb@assays$sgrEnh@counts
 cell.name <- colnames(yourRds.perturb@assays$sgrEnh@counts) 
 feature.name <- rownames(yourRds.perturb@assays$sgrEnh@counts) 
-feature.name <- feature.name[feature.name %in% rownames(yourRds.perturb@assays$DNA@data)] 
-sum(colnames(cn) != cell.name) 
 
 num.feat <- 1
 neighbors <- apply(sgrEnh.mat, MARGIN = 1, FUN = function(x){
